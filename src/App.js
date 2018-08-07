@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 
-
 import {Provider} from 'react-redux';
 
 import {Header} from 'shared/Header';
@@ -13,7 +12,6 @@ import 'App.css';
 const store = require('./reducers').init();
 
 class App extends Component {
-
   render() {
     return (
       <Provider store={store}>
@@ -28,7 +26,6 @@ class App extends Component {
           </div>
         </BrowserRouter>
       </Provider>
-      
     );
   }
 }
