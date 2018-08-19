@@ -3,50 +3,53 @@ const {normalizeErrors} = require('../helpers/moongose');
 const jwt = require('jsonwebtoken');
 const config = require('../config/dev');
 
-exports.auth = function(req, res){
+exports.auth =  function(req, res) {
   const { email, password } = req.body;
 
-  if(!password || !email) {
+  if (!password || !email) {
     return res.status(422).send({errors: [{title: 'Data missing!', detail: 'Provide email and password!'}]});
   }
 
-  User.findOne({email}, function(err, user){
-    if(err) {
+  User.findOne({email}, function(err, user) {
+    if (err) {
       return res.status(422).send({errors: normalizeErrors(err.errors)});
     }
-    if(!user) {
-      return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'User does not exist!'}]});
+
+    if (!user) {
+      return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'User does not exist'}]});
     }
-    if(user.hasSamePassword(password)){
+
+    if (user.hasSamePassword(password)) {
       const token = jwt.sign({
         userId: user.id,
         username: user.username
-      }, config.SECRET, { expiresIn: '1h' });
+      }, config.SECRET, { expiresIn: '1h'});
 
-      return res.json(token) 
+      return res.json(token);
     } else {
-      return res.status(422).send({errors: [{title: 'Wrong Data!', detail: 'Wrong email or password!'}]});
+      return res.status(422).send({errors: [{title: 'Wrong Data!', detail: 'Wrong email or password'}]});
     }
   });
 }
 
-exports.register = function(req, res){
-  const {username, email, password, passwordConfirmation} = req.body;
+exports.register =  function(req, res) {
+  const { username, email, password, passwordConfirmation } = req.body;
 
-  if(!password || !email) {
+  if (!password || !email) {
     return res.status(422).send({errors: [{title: 'Data missing!', detail: 'Provide email and password!'}]});
   }
 
-  if(password !== passwordConfirmation) {
-    return res.status(422).send({errors: [{title: 'Invalid password!', detail: 'Password is not the same as confirmation!'}]});
+  if (password !== passwordConfirmation) {
+    return res.status(422).send({errors: [{title: 'Invalid passsword!', detail: 'Password is not a same as confirmation!'}]});
   }
 
-  User.findOne({email}, function(err, existingUser){
-    if(err) {
+  User.findOne({email}, function(err, existingUser) {
+    if (err) {
       return res.status(422).send({errors: normalizeErrors(err.errors)});
     }
-    if(existingUser) {
-      return res.status(422).send({errors: [{title: 'Invalid email!', detail: 'User with this email already exists!'}]});
+
+    if (existingUser) {
+      return res.status(422).send({errors: [{title: 'Invalid email!', detail: 'User with this email already exist!'}]});
     }
 
     const user = new User({
@@ -54,42 +57,44 @@ exports.register = function(req, res){
       email,
       password
     });
-    user.save(function(err){
-      if(err){
+
+    user.save(function(err) {
+      if (err) {
         return res.status(422).send({errors: normalizeErrors(err.errors)});
       }
 
       return res.json({'registered': true});
-    });
+    })
   })
 }
 
-exports.authMiddleware = function(req, res, next){
+exports.authMiddleware = function(req, res, next) {
   const token = req.headers.authorization;
 
-  if(token){
+  if (token) {
     const user = parseToken(token);
 
-    User.findById(user.userId, function(err, user){
-      if(err){
+    User.findById(user.userId, function(err, user) {
+      if (err) {
         return res.status(422).send({errors: normalizeErrors(err.errors)});
       }
-      if(user){
+
+      if (user) {
         res.locals.user = user;
         next();
-      }else {
-        return notAutorized(res);
+      } else {
+        return notAuthorized(res);
       }
-    });
+    })
   } else {
-    return notAutorized(res);
+    return notAuthorized(res);
   }
 }
 
-function parseToken(token){
+function parseToken(token) {
   return jwt.verify(token.split(' ')[1], config.SECRET);
 }
 
-function notAutorized(res){
+function notAuthorized(res) {
   return res.status(401).send({errors: [{title: 'Not authorized!', detail: 'You need to login to get access!'}]});
 }
