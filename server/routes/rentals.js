@@ -6,14 +6,6 @@ const UserCtrl = require('../controllers/user');
 
 router.get('/secret', UserCtrl.authMiddleware, function(req, res){
   res.json({'secret': true})
-})
-
-router.get('', function(req, res){
-  Rental.find({})
-        .select('-bookings')
-        .exec(function(err, foundRentals){
-    res.json(foundRentals)
-  });
 });
 
 router.get('/:id', function(req, res){
@@ -29,5 +21,22 @@ router.get('/:id', function(req, res){
     return res.json(foundRental);
   });
 });
+
+router.get('', function(req, res){
+  const city = req.query.city;
+
+  if(city){
+    return res.json({city});
+  } else {
+    Rental.find({})
+      .select('-bookings')
+      .exec(function(err, foundRentals){
+
+      return res.json(foundRentals)
+    });
+  }
+});
+
+
 
 module.exports = router;
