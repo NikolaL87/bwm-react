@@ -5,11 +5,14 @@ import {Provider} from 'react-redux';
 
 import Header from 'components/shared/Header';
 import RentalListing from 'components/rental/rental-listing/RentalListing';
+import RentalSearchListing from 'components/rental/rental-listing/RentalSearchListing';
 import RentalDetail from 'components/rental/rental-detail/RentalDetail';
+import {RentalCreate} from 'components/rental/rental-create/RentalCreate';
 import Login from 'components/login/Login';
 import {Register} from 'components/register/Register';
 import {ProtectedRoute} from 'components/shared/auth/ProtectedRoute';
 import {LogedInRoute} from 'components/shared/auth/LogedInRoute';
+
 
 import * as actions from 'actions';
 
@@ -40,6 +43,8 @@ class App extends Component {
             <div className="container">
               <Route exact path="/" render={() => <Redirect to="/rentals" /> } />
               <Route exact path="/rentals" component={RentalListing} />
+              <Route exact path="/rentals/:city/homes" component={RentalSearchListing} />
+              <ProtectedRoute exact path="/rentals/new" component={RentalCreate} />
               <ProtectedRoute exact path="/rentals/:id" component={RentalDetail} />
               <Route exact path="/login" component={Login} />
               <LogedInRoute exact path="/register" component={Register} />
