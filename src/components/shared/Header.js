@@ -15,7 +15,7 @@ class Header extends React.Component {
   }
 
   renderAuthButtons(){
-    const {isAuth} = this.props.auth
+    const {isAuth} = this.props.auth;
 
     if(isAuth){
       return <a className='nav-item nav-link clickable' onClick={this.handleLogout}>Logout</a> 
