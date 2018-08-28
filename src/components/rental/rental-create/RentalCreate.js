@@ -1,6 +1,18 @@
 import React from 'react';
+import RentalCreateForm from './RentalCreateForm';
 
 export class RentalCreate extends React.Component {
+
+  constructor(){
+    super();
+
+    this.createRental = this.createRental.bind(this);
+  }
+
+  createRental(rentalData){
+    console.log(rentalData);
+  }
+
   render(){
     return (
       <section id='newRental'>
@@ -8,7 +20,7 @@ export class RentalCreate extends React.Component {
           <div className='row'>
             <div className='col-md-5'>
               <h1 className='page-title'>Create Rental</h1>
-              RENTAL CREATE FORM HERE!!!!
+              <RentalCreateForm submitCb={this.createRental} />
             </div>
             <div className='col-md-6 ml-auto'>
               <div className='image-container'>
