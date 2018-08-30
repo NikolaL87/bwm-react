@@ -2,9 +2,11 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
 import { BwmInput } from 'components/shared/form/BwmInput';
+import { BwmSelect } from 'components/shared/form/BwmSelect';
+import { BwmTextArea } from '../../shared/form/BwmTextArea';
 
 const RentalCreateForm = props => {
-  const { handleSubmit, pristine, submitting, submitCb, valid } = props;
+  const { handleSubmit, pristine, submitting, submitCb, valid, options } = props;
   return (
     <form onSubmit={handleSubmit(submitCb)}>
       <Field
@@ -13,6 +15,14 @@ const RentalCreateForm = props => {
         label='Title'
         className="form-control"
         component={BwmInput}
+      />
+      <Field
+        name="description"
+        type="text"
+        label='Description'
+        rows='6'
+        className="form-control"
+        component={BwmTextArea}
       />
       <Field
         name="city"
@@ -27,6 +37,13 @@ const RentalCreateForm = props => {
         label='Street'
         className="form-control"
         component={BwmInput}
+      />
+      <Field
+        options={options}
+        name="category"
+        label='Category'
+        className="form-control"
+        component={BwmSelect}
       />
       <Field
         name="bedrooms"
