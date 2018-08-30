@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import { BwmInput } from 'components/shared/form/BwmInput';
 import { BwmSelect } from 'components/shared/form/BwmSelect';
 import { BwmTextArea } from '../../shared/form/BwmTextArea';
+import { BwmFileUpload } from '../../shared/form/BwmFileUpload';
 
 const RentalCreateForm = props => {
   const { handleSubmit, pristine, submitting, submitCb, valid, options } = props;
@@ -46,6 +47,11 @@ const RentalCreateForm = props => {
         component={BwmSelect}
       />
       <Field
+        name="image"
+        label='Image'
+        component={BwmFileUpload}
+      />
+      <Field
         name="bedrooms"
         type="text"
         label='Bedrooms'
@@ -57,6 +63,14 @@ const RentalCreateForm = props => {
         type="text"
         label='Daily Rate'
         className="form-control"
+        symbol='$'
+        component={BwmInput}
+      />
+      <Field
+        name="shared"
+        type="checkbox"
+        label='Shared'
+        className="form-control"
         component={BwmInput}
       />
       <button className="btn btn-bwm btn-form" type="submit" disabled={pristine || submitting}>
@@ -67,5 +81,6 @@ const RentalCreateForm = props => {
 }
 
 export default reduxForm({
-  form: 'RentalCreateForm'
+  form: 'RentalCreateForm',
+  initialValues: {shared: false}
 })(RentalCreateForm);
