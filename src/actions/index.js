@@ -72,11 +72,20 @@ export const fetchRentalById = (rentalId) => {
   }
 }
 
+export const createRental = (rentalData) => {
+  return axiosInstance.post('/rentals', rentalData).then(
+    res => res.data,
+    err => Promise.reject(err.response.data.errors)
+  )
+}
+
 // AUTH ACTION -----------------------
 
 const loginSuccess = () => {
+  const username = authService.getUsername();
   return {
-    type: LOGIN_SUCCESS
+    type: LOGIN_SUCCESS,
+    username
   }
 }
 
