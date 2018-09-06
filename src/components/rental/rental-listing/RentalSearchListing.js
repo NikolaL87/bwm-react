@@ -52,7 +52,6 @@ class RentalSearchListing extends React.Component {
 
   render(){
     const {rentals} = this.props;
-    console.log(rentals)
     return (
       <section id="rentalListing">
         {this.renderTitle()}
