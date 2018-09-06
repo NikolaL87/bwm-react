@@ -55,11 +55,11 @@ router.delete('/:id', UserCtrl.authMiddleware, function(req, res){
           }
 
           if(user.id !== foundRental.user.id) {
-            res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
+            return res.status(422).send({errors: [{title: 'Invalid User!', detail: 'You are not rental owner!'}]});
           }
 
           if(foundRental.bookings.length > 0) {
-            res.status(422).send({errors: [{title: 'Active bookings!', detail: 'Cannot delete rental with active bookings!'}]});
+            return res.status(422).send({errors: [{title: 'Active bookings!', detail: 'Cannot delete rental with active bookings!'}]});
           }
 
           foundRental.remove(function(err){

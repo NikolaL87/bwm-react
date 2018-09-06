@@ -4,7 +4,6 @@ import { BwmResError } from 'components/shared/form/BwmResError';
 
 export function BookingModal(props){
   const { open, closeModal, booking, confirmModal, errors, rentalPrice } = props;
-  console.log(props.booking)
   return (
     <Modal open={open} onClose={closeModal} little classNames={{ modal: 'booking-modal' }}>
       <h4 className='modal-title title'>Confirm Booking </h4>
