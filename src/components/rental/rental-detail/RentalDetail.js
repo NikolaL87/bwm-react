@@ -4,6 +4,7 @@ import * as actions from 'actions';
 import {RentalDetailInfo} from './RentalDetailInfo';
 import { RentalMap } from './RentalMap';
 import { Booking } from 'components/booking/Booking';
+import Loader from 'components/loader/Loader';
 
 class RentalDetail extends React.Component {
 
@@ -44,7 +45,7 @@ class RentalDetail extends React.Component {
       )
     } else {
       return (
-        <h1> Loading... </h1>
+        <Loader />
       )
     }
     
