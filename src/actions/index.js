@@ -10,6 +10,11 @@ import { FETCH_RENTALS_SUCCESS,
          FETCH_USER_BOOKINGS_INIT,
          FETCH_USER_BOOKINGS_SUCCESS,
          FETCH_USER_BOOKINGS_FAIL,
+         UPDATE_RENTAL_SUCCESS,
+         UPDATE_RENTAL_FAIL,
+         RESET_RENTAL_ERRORS,
+         RELOAD_MAP,
+         RELOAD_MAP_FINISH,
          LOGIN_SUCCESS,
          LOGIN_FAILURE,
          LOGOUT
@@ -18,6 +23,10 @@ import { FETCH_RENTALS_SUCCESS,
 // RENTAL ACTIONS -----------------------
 
 const axiosInstance = axiosService.getInstance();
+
+export const verifyRentalOwner = (rentalId) => {
+  return axiosInstance.get(`/rentals/${rentalId}/verify-user`);
+}
 
 const fetchRentalByIdInit = () => {
   return {
@@ -133,6 +142,39 @@ export const deleteRental = (rentalId) => {
   )
 }
 
+// UPDATE RENTAL ACTIONS ----------------------
+const updateRentalSuccess = (updatedRental) => {
+  return {
+    type: UPDATE_RENTAL_SUCCESS,
+    rental: updatedRental
+  }
+}
+
+export const resetRentalErrors = () => {
+  return {
+    type: RESET_RENTAL_ERRORS
+  }
+}
+
+const updateRentalFail = (errors) => {
+  return {
+    type: UPDATE_RENTAL_FAIL,
+    errors
+  }
+}
+
+export const updateRental = (id, rentalData) => dispatch => {
+  return axiosInstance.patch(`/rentals/${id}`, rentalData)
+      .then(res => res.data)
+      .then(updatedRental => {
+        dispatch(updateRentalSuccess(updatedRental));
+        if(rentalData.city || rentalData.street) {
+          dispatch(reloadMap());
+        }
+      })
+      .catch(({response}) => dispatch(updateRentalFail(response.data.errors)))
+}
+
 // AUTH ACTION -----------------------
 
 const loginSuccess = () => {
@@ -190,4 +232,18 @@ export const createBooking = (booking) => {
   return axiosInstance.post('/bookings', booking)
       .then(res => res.data)
       .catch(({response}) => Promise.reject(response.data.errors))
+}
+
+// MAP ACTION -----------------------
+
+export const reloadMap = () => {
+  return {
+    type: RELOAD_MAP
+  }
+}
+
+export const reloadMapFinish = () => {
+  return {
+    type: RELOAD_MAP_FINISH
+  }
 }
