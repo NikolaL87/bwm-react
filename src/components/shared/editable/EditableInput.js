@@ -26,7 +26,7 @@ export class EditableInput extends EditableComponent {
           <input 
             onChange={(event) => this.handleChange(event)} 
             value={value} 
-            className={className} 
+            className={className}
           />
           <button 
             onClick={ () => this.update() } 
@@ -46,7 +46,7 @@ export class EditableInput extends EditableComponent {
         <span className={className}>{this.formatView(value)}</span>
         <button 
           onClick={ () => this.enableEdit() } 
-          className='btn btn-warning btn-editable' 
+          className='btn btn-outline-info btn-editable' 
           type='button'>Edit</button>
       </React.Fragment>
     )
