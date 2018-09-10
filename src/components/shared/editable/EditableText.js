@@ -35,7 +35,7 @@ export class EditableText extends EditableComponent {
         <span className={className}>{value}</span>
         <button 
           onClick={ () => this.enableEdit() } 
-          className='btn btn-warning btn-editable' 
+          className='btn btn-outline-info btn-editable' 
           type='button'>Edit</button>
       </React.Fragment>
     )
