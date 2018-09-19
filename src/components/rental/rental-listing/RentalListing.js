@@ -6,7 +6,7 @@ import * as actions from 'actions';
 
 class RentalListing extends React.Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(actions.fetchRentals());
   }
 
